@@ -1,7 +1,14 @@
 export const statics = {
-    RESET: "reset",
-    NUMPLAYERS: "numplayers",
-    PIECESELECTION: "pieceselection",
-    MOVE: "move",
-    SHOWWINNER: "showwinner"
+  ADD: "add",
+  SUBTRACT: "subtract",
+  MULTIPLY: "multiply",
+  DIVIDE: "divide",
+  EQUALS: "equals",
+  CLEAR: "clear"
 };
+
+export const defaultState = {
+  display: "0",
+  input: "0"
+};
+

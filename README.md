@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-To View a demo of this on CodePen, navigate to https://codepen.io/pfd419/pen/wvvOLKP
+To View a demo of this on CodePen, navigate to https://codepen.io/pfd419/pen/ZEEqPGp
 
 ## Available Scripts
 

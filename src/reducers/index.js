@@ -1,61 +1,59 @@
-import {statics} from '../statics';
-import {checkWin} from '../action';
+import * as math from 'mathjs';
+import { statics, defaultState } from '../statics';
 
-const defaultState = {
-    numPlayers: 1,
-    players: ["X", "O"],
-    turn: 0,
-    numMoves: 0,
-    board: ["", "", "", "", "", "", "", "", ""],
-    winningCombo: [],
-    winningPiece: "",
-    showWinner: false,
-    score: [0, 0]
-  };
+const valueReducer = (state, action) => {
+  // Get current values stripped of leading zero
+  const currentKey = action.character;
+  let currentInput =
+    state.input.toString() === "0" ? "" : state.input.toString();
+  let currentNumber =
+    state.display.toString() === "0" ? "" : state.display.toString();
 
-const reducer = (state = defaultState, action) => {
-    switch (action.type) {
-      case statics.RESET:
-        return defaultState;
-      case statics.NUMPLAYERS:
-        return { ...state, numPlayers: parseInt(action.value) };
-      case statics.PIECESELECTION:
-        return {
-          ...state,
-          turn: action.value === "X" ? 0 : 1,
-          players: action.value === "X" ? ["X", "O"] : ["O", "X"]
-        };
-      case statics.MOVE:
-        const piece = state.players[state.turn];
-        let newPlace = action.place;
-  
-        const newBoard = state.board.map(function (place, idx) {
-          return idx.toString() === newPlace ? piece : place;
-        });
-        const winner = checkWin(newBoard, piece);
-        let newScore = state.score;
-        let newTurn = state.turn === 1 ? 0 : 1;
-        if (winner[0]) {
-          newScore[state.turn]++;
-          newTurn = state.turn;
+  let newNumber;
+  let newInput;
+
+  switch (action.type) {
+    case statics.CLEAR:
+      return defaultState;
+    case statics.EQUALS:
+      let newValue = math.evaluate(state.input);
+      return {
+        display: newValue,
+        input: newValue
+      };
+    case statics.ADD:
+    case statics.SUBTRACT:
+    case statics.MULTIPLY:
+    case statics.DIVIDE:
+      let lastKey = currentInput.charAt(currentInput.length - 1);
+      const operators = ["+", "*", "/", "-"];
+      if (operators.includes(currentKey) && currentKey !== "-") {
+        // Strip all pervious operators (except when "-" currentKey)
+        while (operators.includes(lastKey)) {
+          currentInput = currentInput.slice(0, -1);
+          lastKey = currentInput.charAt(currentInput.length - 1);
         }
-  
-        return {
-          ...state,
-          turn: newTurn,
-          numMoves: state.numMoves + 1,
-          board: newBoard,
-          winningCombo: winner[1],
-          winningPiece: winner[0] ? piece : "",
-          score: newScore
-        };
-      case statics.SHOWWINNER:
-        return {
-          ...state,
-          showWinner: true
-        };
-      default:
-        return state;
-    }
-  };
-  export default reducer;
+      }
+      newInput = currentInput + currentKey;
+      return {
+        display: "",
+        input: newInput
+      };
+    default:
+      // Determine newly entered values stripped of extraneous decimals
+      newNumber =
+        currentKey !== "." || currentNumber.split(".").length <= 1
+          ? currentNumber + currentKey
+          : currentNumber;
+      newInput =
+        currentKey !== "." || currentNumber.split(".").length <= 1
+          ? currentInput + currentKey
+          : currentInput;
+      return {
+        input: newInput,
+        display: newNumber
+      };
+  }
+};
+
+export default valueReducer;
