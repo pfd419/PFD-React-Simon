@@ -20,6 +20,7 @@ const App = () => {
   return (
     <div className="calculator">
       <table>
+        <tbody>
         <tr>
           <td colSpan="5">
             <input
@@ -27,6 +28,7 @@ const App = () => {
               id="displayFull"
               type="text"
               value={val.input}
+              readOnly
             />
             <br />
             <input
@@ -34,6 +36,7 @@ const App = () => {
               id="display"
               type="text"
               value={val.display}
+              readOnly
             />
           </td>
         </tr>
@@ -102,6 +105,7 @@ const App = () => {
             <KeyDiv id="equals" value="=" clickHandler={clickHandler} />
           </td>
         </tr>
+        </tbody>
       </table>
     </div>
   );
