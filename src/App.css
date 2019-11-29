@@ -1,25 +1,9 @@
-.calculator {
-  margin-left: 50px;
-  padding: 3px;
-  border: 2px solid black;
-  background-color: gray;
-  display:inline-block;
-}
-
-.displayWindow {
-  width: 100%;
-  border-width: 0px;
-  margin-bottom: 2px;
-  line-height: 25px;
-  text-align: right;
-}
-.blankKey {
-  height: 50px;
-  min-width: 50px;
-  width: 100%;
-  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7sQf8JZf-0cB8UjpYidORZKpWnjih-_3opZs18j34tbvrDt2B&s");
-  background-size: 100% 100%;
+.banner {
+  height: 60px;
+  font-size: 2em;
   text-align: center;
-  vertical-align: middle;
-  line-height: 50px;
+}
+.banner .sub-banner {
+  font-size: 0.4em;
+  font-style: italic;
 }

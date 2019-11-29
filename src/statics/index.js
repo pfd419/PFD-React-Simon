@@ -1,14 +1,20 @@
 export const statics = {
-  ADD: "add",
-  SUBTRACT: "subtract",
-  MULTIPLY: "multiply",
-  DIVIDE: "divide",
-  EQUALS: "equals",
-  CLEAR: "clear"
+  RESET: "reset",
+  STARTGAME: "startgame",
+  ADDSEQUENCE: "addsequence",
+  ENABLEPLAY: "enableplay",
+  DISABLEPLAY: "disableplay",
+  PLAYERMOVE: "playermove"
+};
+
+export const getRandomPad = () => {
+  return "pad" + (Math.floor(Math.random() * 4) + 1);
 };
 
 export const defaultState = {
-  display: "0",
-  input: "0"
+  playEnabled: false,
+  gameSequence: [getRandomPad()],
+  score: 0,
+  turn: 0,
+  showSequence: false
 };
-

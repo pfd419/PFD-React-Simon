@@ -1,59 +1,43 @@
-import * as math from 'mathjs';
-import { statics, defaultState } from '../statics';
+import { statics, defaultState, getRandomPad } from '../statics';
 
-const valueReducer = (state, action) => {
-  // Get current values stripped of leading zero
-  const currentKey = action.character;
-  let currentInput =
-    state.input.toString() === "0" ? "" : state.input.toString();
-  let currentNumber =
-    state.display.toString() === "0" ? "" : state.display.toString();
-
-  let newNumber;
-  let newInput;
-
+const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case statics.CLEAR:
+    case statics.RESET:
       return defaultState;
-    case statics.EQUALS:
-      let newValue = math.evaluate(state.input);
+    case statics.STARTGAME:
       return {
-        display: newValue,
-        input: newValue
-      };
-    case statics.ADD:
-    case statics.SUBTRACT:
-    case statics.MULTIPLY:
-    case statics.DIVIDE:
-      let lastKey = currentInput.charAt(currentInput.length - 1);
-      const operators = ["+", "*", "/", "-"];
-      if (operators.includes(currentKey) && currentKey !== "-") {
-        // Strip all pervious operators (except when "-" currentKey)
-        while (operators.includes(lastKey)) {
-          currentInput = currentInput.slice(0, -1);
-          lastKey = currentInput.charAt(currentInput.length - 1);
-        }
+        ...defaultState,
+        showSequence: true
       }
-      newInput = currentInput + currentKey;
+    case statics.ENABLEPLAY:
       return {
-        display: "",
-        input: newInput
+        ...state,
+        playEnabled: true,
+        showSequence: false
+      };
+    case statics.DISABLEPLAY:
+      return {
+        ...state,
+        playEnabled: false,
+        showSequence: false
+      };
+    case statics.PLAYERMOVE:
+      return {
+        ...state,
+        playEnabled: true,
+        turn: state.turn + 1
+      };
+    case statics.ADDSEQUENCE:
+      return {
+        ...state,
+        playEnabled: false,
+        gameSequence: state.gameSequence.concat(getRandomPad()),
+        showSequence: true,
+        score: state.score + 1,
+        turn: 0
       };
     default:
-      // Determine newly entered values stripped of extraneous decimals
-      newNumber =
-        currentKey !== "." || currentNumber.split(".").length <= 1
-          ? currentNumber + currentKey
-          : currentNumber;
-      newInput =
-        currentKey !== "." || currentNumber.split(".").length <= 1
-          ? currentInput + currentKey
-          : currentInput;
-      return {
-        input: newInput,
-        display: newNumber
-      };
+      return state;
   }
 };
-
-export default valueReducer;
+export default reducer;
